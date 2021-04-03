@@ -67,7 +67,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/">&nbsp;<strong>Future's blog</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>异想录</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      334 字
+      326 字
     </span>
   
 
@@ -233,9 +233,9 @@
             
             <div class="markdown-body">
               <p>As you know, the database connection is a very scarce resource in the web application. It takes a long time for a request to connect and close database, and it also spends some resources. If there are hundreds of thousands of requests sent to the database concurrently, the performance of database will be bad, or even it crushed except you add some hardware resources to accelerate it. But most of us are more willing to improve the throughput in the software level. So, it’s a good idea that build a “Database Connection Pool” to reuses the database connection resource, which calls “resource pool” in the software design model.</p>
-<p><img src="/images/database-connection-pool/without-dcp.png" srcset="/img/loading.gif" alt="Figure 1 without dcp"><br>Figure 1, without DCP</p>
+<p><img src="/images/database-connection-pool/without-dcp.png" srcset="/img/loading.gif" alt="Figure 1 without dcp"></p>
 <p>Actually, the DCP is like a connection cache. Each request will get a connection which is already connecting to the database from DCP. This method can improve the throughput.</p>
-<p><img src="/images/database-connection-pool/with-dcp.png" srcset="/img/loading.gif" alt="Figure 2 with dcp"><br>Figure 2, with DCP</p>
+<p><img src="/images/database-connection-pool/with-dcp.png" srcset="/img/loading.gif" alt="Figure 2 with dcp"></p>
 <p>However, we also need to do some work to set some limitations(table 1) on DCP to avoid to waste the hardware resources.</p>
 <p>Table 1, parameters for configuring DCP</p>
 <div class="table-container">

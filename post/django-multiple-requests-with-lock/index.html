@@ -67,7 +67,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/">&nbsp;<strong>Future's blog</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>异想录</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      327 字
+      322 字
     </span>
   
 
@@ -234,8 +234,7 @@
             <div class="markdown-body">
               <p>Recently, I met a problem in our project. We do some hidden operations in server to release user’s hands. And one of them is that we want to create an unique record in database per user. So, in the beginning, we just checked the database firstly for knowing if the record exists or not through, and then we will create a new record simply if it does not exist in the database. But, unfortunately, we found a strange thing that more than one records would be created in the database. As you see, we only want to get the unique one idealy, but the reality is not what we want. Interesting, right? We discussed this problem for a while without any results. </p>
 <p>But we have to resolve it because of the impact to other modules. So, the first step we must reproduce this bug. Please allow me to analyse from start. First of all, the client will check if there is a record exists or not in database. And then the server will create a new one when no data is returned. Obviously, if the client(same login user in different place) sends more than one requests concurrently, the server will create multiple records because one request won’t find a record from the database while another request is writing the data into the database at the same time. (see figure 1)</p>
-<p><img src="/images/django-multiple-requests-with-lock/concurrent-requests.png" srcset="/img/loading.gif" alt="figure1 concurrent requests"></p>
-<p>figure 1, send requests concurrently</p>
+<p><img src="/images/django-multiple-requests-with-lock/concurrent-requests.png" srcset="/img/loading.gif" alt="Figure 1 concurrent requests"></p>
 <p>So, we need to add a lock on <strong>select</strong>. When one request is selecting from the database, the others must wait until it released the lock. Fortunately, Django provides a function <strong>select_for_update()</strong> to add a lock on database.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">@transaction.atomic</span><br><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create</span>(<span class="hljs-params">self, request, *args, **kwargs</span>):</span><br>    params = self.getParam(request)<br><br>    <span class="hljs-comment"># validation</span><br>    serializer = self.get_serializer(data=params)<br>    serializer.is_valid(raise_exception=<span class="hljs-literal">True</span>)<br><br>    <span class="hljs-keyword">try</span>:<br>        instance = some_model.objects.select_for_update().get(<br>            created_by=self.request.user)<br>        <span class="hljs-keyword">return</span> Response(..., status=status.HTTP_200_OK)<br>    <span class="hljs-keyword">except</span> some_model.DoesNotExist:<br>        <span class="hljs-comment"># create a new one ...</span><br><br>        <span class="hljs-keyword">return</span> Response(..., status=status.HTTP_201_CREATED, headers=headers)<br></code></pre></td></tr></table></figure>
 

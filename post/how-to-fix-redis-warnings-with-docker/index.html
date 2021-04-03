@@ -67,7 +67,7 @@
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
-       href="/">&nbsp;<strong>Future's blog</strong>&nbsp;</a>
+       href="/">&nbsp;<strong>异想录</strong>&nbsp;</a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      523 字
+      517 字
     </span>
   
 
@@ -233,7 +233,7 @@
             
             <div class="markdown-body">
               <p>When we start up a redis service with docker, we will meet some warnings which maybe make your service shut down. Like, the limitation of maximum connections. So what we should do is fix these warnings. In normal case, we will see four kind of warnings like below.</p>
-<p><img src="/images/how-to-fix-redis-warnings-with-docker/redis_warning.png" srcset="/img/loading.gif" alt="Fig.1 redis warnings"><br>Fig.1 redis warnings using docker</p>
+<p><img src="/images/how-to-fix-redis-warnings-with-docker/redis_warning.png" srcset="/img/loading.gif" alt="Fig.1 redis warnings"></p>
 <p>First of all, we should give a specific config for redis. So we have to copy(or mount) a config file to the docker container. If you don’t have the file <em>redis.conf</em>, please refer to <a target="_blank" rel="noopener" href="https://redis.io/topics/config">https://redis.io/topics/config</a>. You can find every versions’ config.</p>
 <figure class="highlight docker"><figcaption><span>Dockerfile</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs docker"><span class="hljs-keyword">FROM</span> redis:alpine<br><span class="hljs-keyword">WORKDIR</span><span class="bash"> /redis</span><br><span class="hljs-keyword">COPY</span><span class="bash"> redis.conf /usr/<span class="hljs-built_in">local</span>/etc/redis/redis.conf</span><br><span class="hljs-keyword">COPY</span><span class="bash"> init.sh ./</span><br><span class="hljs-keyword">RUN</span><span class="bash"> chmod +x init.sh</span><br></code></pre></td></tr></table></figure>
 <p>The easy way is that we could modify the system configurations before starting redis server. The other recommanded way is that we can mount these system files from host machine to docker container(But I never tried it, I’m not sure if it’s good or not.). Below is the example of the easy way.</p>
@@ -276,7 +276,7 @@
                     
                       <a href="/post/build-a-server-environment/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">build a server environment(ubuntu+mysq+nginx+tomcat)</span>
+                        <span class="hidden-mobile">build a server environment(ubuntu+mysql+nginx+tomcat)</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
